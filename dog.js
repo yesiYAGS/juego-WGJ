@@ -6,8 +6,8 @@ let totalOfSquares = 5;
 let redSquares = [];
 
 let headImgs = {};
+let bodyImgs = {};
 let tailImg;
-let bodyXImg;
 
 let alerted = new Array(totalOfSquares).fill(false);
 
@@ -16,11 +16,13 @@ function preload() {
   headImgs['b'] = loadImage('assets/head-b.svg');
   headImgs['l'] = loadImage('assets/head-l.svg');
   headImgs['t'] = loadImage('assets/head-t.svg');
+  bodyImgs['x'] = loadImage('assets/body-x.svg');
+  bodyImgs['y'] = loadImage('assets/body-y.svg');
   tailImg = loadImage('assets/tail.svg');
-  bodyXImg = loadImage('assets/body-x.svg');
 }
 
 let currentHeadDirection = 'r';
+let currentBodyDirection = 'x';
 
 function setup() {
   createCanvas(size * 10, size * 10);
@@ -67,7 +69,7 @@ function draw() {
   }
 
   for (let i = 1; i < dogTrail.length; i++) {
-    image(bodyXImg, dogTrail[i].x, dogTrail[i].y, size, size);
+    image(bodyImgs[dogTrail[i].direction], dogTrail[i].x, dogTrail[i].y, size, size);
   }
 
   image(headImgs[currentHeadDirection], posX, posY, size, size);
@@ -88,19 +90,24 @@ function keyPressed() {
   for (let step = 0; step < resultadoDado; step++) {
     let newX = posX;
     let newY = posY;
-    let direction = currentHeadDirection; // Aquí guardamos la dirección actual
+    let directionHead = currentHeadDirection;
+    let directionBody = currentBodyDirection;
 
     if (keyCode === LEFT_ARROW) {
-      direction = 'l';
+      directionHead = 'l';
+      directionBody = 'x';
       newX -= size;
     } else if (keyCode === RIGHT_ARROW) {
-      direction = 'r';
+      directionHead = 'r';
+      directionBody = 'x';
       newX += size;
     } else if (keyCode === DOWN_ARROW) {
-      direction = 'b';
+      directionHead = 'b';
+      directionBody = 'y';
       newY += size;
     } else if (keyCode === UP_ARROW) {
-      direction = 't';
+      directionHead = 't';
+      directionBody = 'y';
       newY -= size;
     }
 
@@ -111,8 +118,8 @@ function keyPressed() {
       newY < height &&
       !dogTrail.some(sq => sq.x === newX && sq.y === newY)
     ) {
-      currentHeadDirection = direction; 
-      dogTrail.push({ x: posX, y: posY });
+      currentHeadDirection = directionHead; 
+      dogTrail.push({ x: posX, y: posY, direction: directionBody });
       posX = newX;
       posY = newY;
     }
