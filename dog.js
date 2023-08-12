@@ -80,28 +80,30 @@ function draw() {
 function keyPressed() {
   const resultadoDado = lanzarDado();
   console.log("Resultado del lanzamiento del dado:", resultadoDado);
-  let newX = posX;
-  let newY = posY;
+  for (let step = 0; step < resultadoDado; step++) {
+    let newX = posX;
+    let newY = posY;
 
-  if (keyCode === LEFT_ARROW) {
-    newX -= resultadoDado * size;
-  } else if (keyCode === RIGHT_ARROW) {
-    newX += resultadoDado * size;
-  } else if (keyCode === UP_ARROW) {
-    newY -= resultadoDado * size;
-  } else if (keyCode === DOWN_ARROW) {
-    newY += resultadoDado * size;
-  }
+    if (keyCode === LEFT_ARROW) {
+      newX -= size;
+    } else if (keyCode === RIGHT_ARROW) {
+      newX += size;
+    } else if (keyCode === UP_ARROW) {
+      newY -= size;
+    } else if (keyCode === DOWN_ARROW) {
+      newY += size;
+    }
 
-  if (
-    newX >= 0 &&
-    newY >= 0 &&
-    newX < width &&
-    newY < height &&
-    !dogTrail.some(sq => sq.x === newX && sq.y === newY)
-  ) {
-    dogTrail.push({ x: posX, y: posY });
-    posX = newX;
-    posY = newY;
+    if (
+      newX >= 0 &&
+      newY >= 0 &&
+      newX < width &&
+      newY < height &&
+      !dogTrail.some(sq => sq.x === newX && sq.y === newY)
+    ) {
+      dogTrail.push({ x: posX, y: posY });
+      posX = newX;
+      posY = newY;
+    }
   }
 }
