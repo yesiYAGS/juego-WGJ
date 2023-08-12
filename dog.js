@@ -18,7 +18,6 @@ function setup() {
   background(200);
   drawGrid();
   drawRandomRedSquares(totalOfSquares);
-  imageMode(CENTER);
   image(headImg, 0, 0, size, size);
   image(tailImg, 0, 0, size, size);
 }
