@@ -20,7 +20,7 @@ function preload() {
   bodyImgs['x'] = loadImage('assets/body-x.svg');
   bodyImgs['y'] = loadImage('assets/body-y.svg');
   tailImgs['r'] = loadImage('assets/tail-r.svg');
-  tailImgs['d'] = loadImage('assets/tail-d.svg');
+  tailImgs['b'] = loadImage('assets/tail-d.svg');
 }
 
 let currentHeadDirection = 'r';
@@ -95,7 +95,7 @@ function keyPressed() {
     if (keyCode === RIGHT_ARROW) {
       initialTailDirection = 'r';
     } else if (keyCode === DOWN_ARROW) {
-      initialTailDirection = 'd';
+      initialTailDirection = 'b';
     }
     firstKeyPress = false;
   }
