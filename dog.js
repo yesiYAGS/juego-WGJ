@@ -5,24 +5,29 @@ let dogTrail = [];
 let totalOfSquares = 5;
 let redSquares = [];
 
-let headImg
+let headImgs = {};
 let tailImg;
 let bodyXImg;
 
 let alerted = new Array(totalOfSquares).fill(false);
 
 function preload() {
-  headImg = loadImage('assets/head.svg');
+  headImgs['r'] = loadImage('assets/head-r.svg');
+  headImgs['b'] = loadImage('assets/head-b.svg');
+  headImgs['l'] = loadImage('assets/head-l.svg');
+  headImgs['t'] = loadImage('assets/head-t.svg');
   tailImg = loadImage('assets/tail.svg');
   bodyXImg = loadImage('assets/body-x.svg');
 }
+
+let currentHeadDirection = 'r';
 
 function setup() {
   createCanvas(size * 10, size * 10);
   background(200);
   drawGrid();
   drawRandomRedSquares(totalOfSquares);
-  image(headImg, 0, 0, size, size);
+  image(headImgs[currentHeadDirection], 0, 0, size, size);
   image(tailImg, 0, 0, size, size);
 }
 
@@ -65,7 +70,7 @@ function draw() {
     image(bodyXImg, dogTrail[i].x, dogTrail[i].y, size, size);
   }
 
-  image(headImg, posX, posY, size, size);
+  image(headImgs[currentHeadDirection], posX, posY, size, size);
   
   for (let i = 0; i < redSquares.length; i++) {
     let redSquare = redSquares[i];
@@ -83,15 +88,20 @@ function keyPressed() {
   for (let step = 0; step < resultadoDado; step++) {
     let newX = posX;
     let newY = posY;
+    let direction = currentHeadDirection; // Aquí guardamos la dirección actual
 
     if (keyCode === LEFT_ARROW) {
+      direction = 'l';
       newX -= size;
     } else if (keyCode === RIGHT_ARROW) {
+      direction = 'r';
       newX += size;
-    } else if (keyCode === UP_ARROW) {
-      newY -= size;
     } else if (keyCode === DOWN_ARROW) {
+      direction = 'b';
       newY += size;
+    } else if (keyCode === UP_ARROW) {
+      direction = 't';
+      newY -= size;
     }
 
     if (
@@ -101,6 +111,7 @@ function keyPressed() {
       newY < height &&
       !dogTrail.some(sq => sq.x === newX && sq.y === newY)
     ) {
+      currentHeadDirection = direction; 
       dogTrail.push({ x: posX, y: posY });
       posX = newX;
       posY = newY;
