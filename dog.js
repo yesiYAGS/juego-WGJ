@@ -40,7 +40,7 @@ function draw() {
   drawGrid();
   for (let { x, y } of redSquares) {
     fill(255, 0, 0);
-    rect(x, y, 20, 20);
+    rect(x, y, size / 2, size / 2);
   }
   fill(0);
   for (let { x, y } of dogTrail) {
