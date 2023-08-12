@@ -2,10 +2,11 @@
 
 function lanzarDado() {
     // Generar un número aleatorio entre 1 y 6 (ambos inclusive)
-    const resultado = Math.floor(Math.random() * 6) + 1;
+    const resultado = Math.floor(Math.random() * 6) + 1;    
+    document.getElementById("resultado").textContent = "Resultado del lanzamiento: " + resultado;
+    return resultado
 
     // Mostrar el resultado en el elemento con id "resultado"
-    document.getElementById("resultado").textContent = "Resultado del lanzamiento: " + resultado;
     console.log(resultado);
 }
   

@@ -67,17 +67,19 @@ function draw() {
 
 
 function keyPressed() {
+  const resultadoDado = lanzarDado();
+  console.log("Resultado del lanzamiento del dado:", resultadoDado);
   let newX = posX;
   let newY = posY;
 
   if (keyCode === LEFT_ARROW) {
-    newX -= size;
+    newX -= resultadoDado * size;
   } else if (keyCode === RIGHT_ARROW) {
-    newX += size;
-  } else if (keyCode === DOWN_ARROW) {
-    newY += size;
+    newX += resultadoDado * size;
   } else if (keyCode === UP_ARROW) {
-    newY -= size;
+    newY -= resultadoDado * size;
+  } else if (keyCode === DOWN_ARROW) {
+    newY += resultadoDado * size;
   }
 
   if (
