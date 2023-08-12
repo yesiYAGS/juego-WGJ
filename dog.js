@@ -13,12 +13,16 @@ function setup() {
 			line(0, y, width, y);
 		}
 	}
+
+  drawRandomRedSquares(5);
+  
 }
 
 function draw() {
   fill(0);
   rect(posX, posY, size, size);
 }
+
 function keyPressed() {
   if (keyCode === LEFT_ARROW) {
     posX = posX - size;
@@ -30,5 +34,17 @@ function keyPressed() {
     posY = posY + size;
   } else if (keyCode === UP_ARROW) {
     posY = posY - size;
+  }
+}
+
+
+function drawRandomRedSquares(count) {
+  for (let i = 0; i < count; i++) {
+    let gridX = int(random(width / size));
+    let gridY = int(random(height / size));
+    let x = gridX * size + (size - size / 2) / 2;
+    let y = gridY * size + (size -  size / 2) / 2;
+    fill(255, 0, 0);
+    rect(x, y, size / 2, size / 2);
   }
 }
