@@ -1,6 +1,7 @@
 let posX = 0;
 let posY = 0;
 let size = 40;
+let totalOfSquares = 5;
 
 function setup() {
   createCanvas(size * 10, size * 10);
@@ -13,9 +14,7 @@ function setup() {
 			line(0, y, width, y);
 		}
 	}
-
-  drawRandomRedSquares(5);
-  
+  drawRandomRedSquares(totalOfSquares);  
 }
 
 function draw() {
@@ -36,7 +35,6 @@ function keyPressed() {
     posY = posY - size;
   }
 }
-
 
 function drawRandomRedSquares(count) {
   for (let i = 0; i < count; i++) {
