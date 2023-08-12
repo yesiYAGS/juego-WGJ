@@ -8,6 +8,8 @@ let redSquares = [];
 let headImg
 let tailImg;
 
+let alerted = new Array(totalOfSquares).fill(false);
+
 function preload() {
   headImg = loadImage('assets/head.svg');
   tailImg = loadImage('assets/tail.svg');
@@ -37,11 +39,11 @@ function drawRandomRedSquares(count) {
   for (let i = 0; i < count; i++) {
     let gridX = int(random(width / size));
     let gridY = int(random(height / size));
-    let x = gridX * size + (size - size / 2) / 2;
-    let y = gridY * size + (size - size / 2) / 2;
+    let x = gridX * size;
+    let y = gridY * size;
     redSquares.push({ x: x, y: y });
     fill(255, 0, 0);
-    rect(x, y, size / 2, size / 2);
+    rect(x + size / 4, y + size / 4, size / 2, size / 2);
   }
 }
 
@@ -50,7 +52,7 @@ function draw() {
   drawGrid();
   for (let { x, y } of redSquares) {
     fill(255, 0, 0);
-    rect(x, y, size / 2, size / 2);
+    rect(x + size / 4, y + size / 4, size / 2, size / 2);
   }
 
   if (dogTrail.length > 0) {
@@ -63,8 +65,16 @@ function draw() {
   }
 
   image(headImg, posX, posY, size, size);
+  
+  for (let i = 0; i < redSquares.length; i++) {
+    let redSquare = redSquares[i];
+    if (posX === redSquare.x && posY === redSquare.y && !alerted[i]) {
+      alert("Pisaste una carta");
+      alerted[i] = true; 
+      break;
+    }
+  }
 }
-
 
 function keyPressed() {
   const resultadoDado = lanzarDado();
