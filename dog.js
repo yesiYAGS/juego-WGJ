@@ -5,11 +5,22 @@ let dogTrail = [];
 let totalOfSquares = 5;
 let redSquares = [];
 
+let headImg
+let tailImg;
+
+function preload() {
+  headImg = loadImage('assets/head.svg');
+  tailImg = loadImage('assets/tail.svg');
+}
+
 function setup() {
   createCanvas(size * 10, size * 10);
   background(200);
   drawGrid();
   drawRandomRedSquares(totalOfSquares);
+  imageMode(CENTER);
+  image(headImg, 0, 0, size, size);
+  image(tailImg, 0, 0, size, size);
 }
 
 function drawGrid() {
@@ -42,11 +53,17 @@ function draw() {
     fill(255, 0, 0);
     rect(x, y, size / 2, size / 2);
   }
-  fill(0);
-  for (let { x, y } of dogTrail) {
-    rect(x, y, size, size);
+
+  if (dogTrail.length > 0) {
+    image(tailImg, dogTrail[0].x, dogTrail[0].y, size, size);
   }
-  rect(posX, posY, size, size);
+
+  fill(0);
+  for (let i = 1; i < dogTrail.length; i++) {
+    rect(dogTrail[i].x, dogTrail[i].y, size, size);
+  }
+
+  image(headImg, posX, posY, size, size);
 }
 
 
