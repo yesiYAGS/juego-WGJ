@@ -20,7 +20,7 @@ function preload() {
   bodyImgs['x'] = loadImage('assets/body-x.svg');
   bodyImgs['y'] = loadImage('assets/body-y.svg');
   tailImgs['r'] = loadImage('assets/tail-r.svg');
-  tailImgs['b'] = loadImage('assets/tail-d.svg');
+  tailImgs['b'] = loadImage('assets/tail-b.svg');
 }
 
 let currentHeadDirection = 'r';
