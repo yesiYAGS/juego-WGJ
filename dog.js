@@ -7,12 +7,14 @@ let redSquares = [];
 
 let headImg
 let tailImg;
+let bodyXImg;
 
 let alerted = new Array(totalOfSquares).fill(false);
 
 function preload() {
   headImg = loadImage('assets/head.svg');
   tailImg = loadImage('assets/tail.svg');
+  bodyXImg = loadImage('assets/body-x.svg');
 }
 
 function setup() {
@@ -59,9 +61,8 @@ function draw() {
     image(tailImg, dogTrail[0].x, dogTrail[0].y, size, size);
   }
 
-  fill(0);
   for (let i = 1; i < dogTrail.length; i++) {
-    rect(dogTrail[i].x, dogTrail[i].y, size, size);
+    image(bodyXImg, dogTrail[i].x, dogTrail[i].y, size, size);
   }
 
   image(headImg, posX, posY, size, size);
