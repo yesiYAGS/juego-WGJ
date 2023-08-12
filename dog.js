@@ -1,26 +1,34 @@
-let posX = 30;
-let posY = 30;
-let value = 0;
+let posX = 0;
+let posY = 0;
+let size = 40;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(size * 10, size * 10);
   background(200);
+  for (var x = 0; x < width; x += size) {
+		for (var y = 0; y < height; y += size) {
+			stroke(0);
+			strokeWeight(1);
+			line(x, 0, x, height);
+			line(0, y, width, y);
+		}
+	}
 }
 
 function draw() {
   fill(0);
-  rect(posX, posY, 50, 50);
+  rect(posX, posY, size, size);
 }
 function keyPressed() {
   if (keyCode === LEFT_ARROW) {
-    posX = posX - 30;
+    posX = posX - size;
   } else if (keyCode === RIGHT_ARROW) {
-    posX = posX + 30;
+    posX = posX + size;
   }
 
   if (keyCode === DOWN_ARROW) {
-    posY = posY + 30;
+    posY = posY + size;
   } else if (keyCode === UP_ARROW) {
-    posY = posY - 30;
+    posY = posY - size;
   }
 }
