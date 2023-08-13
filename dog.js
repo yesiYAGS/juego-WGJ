@@ -1,6 +1,8 @@
 let firstKeyPress = true;
 let posX = 0;
 let posY = 0;
+let initialPosX;
+let initialPosY;
 let size = 40;
 let rollbackCount = 3;
 let dogTrail = [];
@@ -48,8 +50,10 @@ function setup() {
   drawRandomSquares(totalOfRedSquares, redSquares, 255, 0, 0); // Rojo
   drawRandomSquares(totalOfBlueSquares, blueSquares, 0, 0, 255); // Azul
   drawRandomSquares(totalOfGreenSquares, greenSquares, 0, 255, 0); // Verde
-  image(headImgs[currentHeadDirection], 0, 0, size, size);
-  image(tailImgs[initialTailDirection], 0, 0, size, size);
+  initialPosX = 0;
+  initialPosY = 0;
+  image(headImgs[currentHeadDirection], initialPosX, initialPosY, size, size);
+  image(tailImgs[initialTailDirection], initialPosX, initialPosY, size, size);
 
   do {
     gridX = int(random(width / size));
@@ -140,9 +144,7 @@ function draw() {
   });
 
   checkSpecialSquares(blueSquares, alertedBlue, () => {
-    if (dogTrail.length > rollbackCount) {
-      retroceder(rollbackCount);
-    }
+    retroceder(rollbackCount);
   });
 
   checkSpecialSquares(greenSquares, alertedGreen, () => {
@@ -276,6 +278,15 @@ function checkSpecialSquares(array, alertedArray, action) {
 }
 
 function retroceder(pasos) {
+  if (dogTrail.length <= pasos) {
+    posX = initialPosX;
+    posY = initialPosY;
+    currentHeadDirection = initialTailDirection;
+    initialTailDirection = 'r'; 
+    dogTrail = [];
+    return;
+  }
+
   let segmentBeforeCorner;
 
   for (let i = 0; i < pasos; i++) {
