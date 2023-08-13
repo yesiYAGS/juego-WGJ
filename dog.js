@@ -14,7 +14,7 @@ let bodyImgs = {};
 let tailImgs = {};
 let cornerImgs = {};
 
-let alerted = new Array(totalOfSquares*3).fill(false);
+let alerted = new Array(totalOfSquares).fill(false);
 let resultadoDado = 0;
 
 function preload() {
@@ -236,7 +236,7 @@ function checkSpecialSquares(array, action) {
   for (let i = 0; i < array.length; i++) {
     let square = array[i];
     if (posX === square.x && posY === square.y && !alerted[i]) {
-      action();
+      setTimeout(action, 100); 
       alerted[i] = true;
       break;
     }
