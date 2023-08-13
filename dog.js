@@ -9,6 +9,7 @@ let redSquares = [];
 let headImgs = {};
 let bodyImgs = {};
 let tailImgs = {};
+let cornerImgs = {};
 
 let alerted = new Array(totalOfSquares).fill(false);
 
@@ -21,6 +22,10 @@ function preload() {
   bodyImgs['y'] = loadImage('assets/body-y.svg');
   tailImgs['r'] = loadImage('assets/tail-r.svg');
   tailImgs['b'] = loadImage('assets/tail-b.svg');
+  cornerImgs['rb'] = loadImage('assets/corner-rb.svg');
+  cornerImgs['rt'] = loadImage('assets/corner-rt.svg');
+  cornerImgs['lb'] = loadImage('assets/corner-lb.svg');
+  cornerImgs['lt'] = loadImage('assets/corner-lt.svg');
 }
 
 let currentHeadDirection = 'r';
@@ -72,7 +77,12 @@ function draw() {
   }
 
   for (let i = 1; i < dogTrail.length; i++) {
-    image(bodyImgs[dogTrail[i].direction], dogTrail[i].x, dogTrail[i].y, size, size);
+    let segment = dogTrail[i];
+    if (segment.corner) {
+      image(cornerImgs[segment.corner], segment.x, segment.y, size, size);
+    } else {
+      image(bodyImgs[segment.direction], segment.x, segment.y, size, size);
+    }
   }
 
   image(headImgs[currentHeadDirection], posX, posY, size, size);
@@ -99,6 +109,8 @@ function keyPressed() {
     }
     firstKeyPress = false;
   }
+
+  let previousDirection = currentHeadDirection;
 
   for (let step = 0; step < resultadoDado; step++) {
     let newX = posX;
@@ -131,8 +143,14 @@ function keyPressed() {
       newY < height &&
       !dogTrail.some(sq => sq.x === newX && sq.y === newY)
     ) {
+      let cornerType = '';
+      if (previousDirection === 'r' && directionHead === 'b') cornerType = 'lb';
+      if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
+      if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
+      if (previousDirection === 'l' && directionHead === 't') cornerType = 'rt';
+
       currentHeadDirection = directionHead; 
-      dogTrail.push({ x: posX, y: posY, direction: directionBody });
+      dogTrail.push({ x: posX, y: posY, direction: directionBody, corner: cornerType });
       posX = newX;
       posY = newY;
     }
