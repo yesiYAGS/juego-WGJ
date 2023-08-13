@@ -118,6 +118,7 @@ function draw() {
 
   checkSpecialSquares(redSquares, alertedRed, () => {
     alert("¡Perdiste!");
+    location.reload();
   });
 
   checkSpecialSquares(blueSquares, alertedBlue, () => {
