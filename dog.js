@@ -112,6 +112,8 @@ function keyPressed() {
 
   let previousDirection = currentHeadDirection;
 
+  let hasTurned = false;
+
   for (let step = 0; step < resultadoDado; step++) {
     let newX = posX;
     let newY = posY;
@@ -144,15 +146,20 @@ function keyPressed() {
       !dogTrail.some(sq => sq.x === newX && sq.y === newY)
     ) {
       let cornerType = '';
-      if (previousDirection === 'r' && directionHead === 'b') cornerType = 'lb';
-      if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
-      if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
-      if (previousDirection === 'l' && directionHead === 't') cornerType = 'rt';
-
+      if (previousDirection !== directionHead && !hasTurned) { 
+        if (previousDirection === 'r' && directionHead === 'b') cornerType = 'lb';
+        if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
+        if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
+        if (previousDirection === 'l' && directionHead === 't') cornerType = 'rt';
+        hasTurned = true; 
+      }
+  
       currentHeadDirection = directionHead; 
       dogTrail.push({ x: posX, y: posY, direction: directionBody, corner: cornerType });
       posX = newX;
       posY = newY;
     }
   }
+
+  hasTurned = false;
 }
