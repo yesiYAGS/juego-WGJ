@@ -64,8 +64,8 @@ function setup() {
 }
 
 function drawGrid() {
-  for (var x = 0; x < width; x += size) {
-    for (var y = 0; y < height; y += size) {
+  for (let x = 0; x < width; x += size) {
+    for (let y = 0; y < height; y += size) {
       stroke(0);
       strokeWeight(1);
       line(x, 0, x, height);
