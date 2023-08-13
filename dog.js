@@ -1,6 +1,7 @@
 let firstKeyPress = true;
 let dadoLanzado = false;
 let direccionElegida = false;
+let resultadoDado = 0;
 let posX = 0;
 let posY = 0;
 let initialPosX;
@@ -25,7 +26,6 @@ let cornerImgs = {};
 let alertedRed = new Array(totalOfRedSquares).fill(false);
 let alertedBlue = new Array(totalOfBlueSquares).fill(false);
 let alertedGreen = new Array(totalOfGreenSquares).fill(false);
-let resultadoDado = 0;
 
 function preload() {
   headImgs['r'] = loadImage('assets/head-r.svg');
@@ -180,11 +180,21 @@ function activarMovimiento(dado) {
   }
 }
 
+function lanzarDado() {
+  resultadoDado = Math.floor(Math.random() * 6) + 1; // Lanzamiento de un dado de 6 caras
+  document.getElementById("resultado").innerText = "Resultado del dado: " + resultadoDado;
+  dadoLanzado = true;
+  direccionElegida = false;
+  habilitarBotonLanzarDado(false);
+  habilitarBotonesDireccion(true);
+}
+
 function mover(direccion) {
   if (dadoLanzado && direccionElegida) {
     console.log(dadoLanzado, direccionElegida);
     keyPressed(direccion);
     direccionElegida = false;
+    dadoLanzado = false; // Se reinicia después de mover
     habilitarBotonesDireccion(false);
     habilitarBotonLanzarDado(true);
   }
@@ -233,6 +243,8 @@ function habilitarBotonLanzarDado(habilitar) {
   const botonLanzarDado = document.getElementById("btnLanzarDado");
   botonLanzarDado.disabled = !habilitar;
 }
+
+habilitarBotonesDireccion(false);
 
 
 function keyPressed(keyCode) {
