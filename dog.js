@@ -51,6 +51,13 @@ function setup() {
   drawRandomSquares(totalOfGreenSquares, greenSquares, 0, 255, 0); // Verde
   image(headImgs[currentHeadDirection], 0, 0, size, size);
   image(tailImgs[initialTailDirection], 0, 0, size, size);
+
+  do {
+    yellowSquareX = int(random(width / size)) * size;
+    yellowSquareY = int(random(height / size)) * size;
+  } while (isSquareOccupied(yellowSquareX, yellowSquareY));
+
+  yellowSquare = { x: yellowSquareX, y: yellowSquareY };
 }
 
 function drawGrid() {
@@ -100,6 +107,8 @@ function draw() {
   drawSquares(redSquares, 255, 0, 0, alertedRed);
   drawSquares(blueSquares, 0, 0, 255, alertedBlue);
   drawSquares(greenSquares, 0, 255, 0, alertedGreen);
+  fill(255, 255, 0);
+  rect(yellowSquare.x, yellowSquare.y, size, size);
 
   if (dogTrail.length > 0) {
     image(tailImgs[initialTailDirection], dogTrail[0].x, dogTrail[0].y, size, size);
@@ -130,6 +139,14 @@ function draw() {
   checkSpecialSquares(greenSquares, alertedGreen, () => {
     alert("Esta es la personalidad de tu dueño");
   });
+
+  if (posX === yellowSquare.x && posY === yellowSquare.y) {
+    noLoop();
+    setTimeout(() => {
+      alert("¡Ganaste!");
+      location.reload();
+    }, 100);
+  }
 }
 
 function activarMovimiento(dado) {
