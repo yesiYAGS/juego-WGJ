@@ -119,7 +119,6 @@ function moverAbajo() {
 
 function keyPressed(keyCode) {
   if (resultadoDado > 0) {
-    const resultadoDado = lanzarDado();
   console.log("Resultado del lanzamiento del dado:", resultadoDado);
   
   if (firstKeyPress) {
@@ -138,52 +137,54 @@ function keyPressed(keyCode) {
     let newY = posY;
     let directionHead = currentHeadDirection;
     let directionBody = currentBodyDirection;
-
-    if (keyCode === LEFT_ARROW) {
-      directionHead = 'l';
-      directionBody = 'x';
-      newX -= resultadoDado * size;
-    } else if (keyCode === RIGHT_ARROW) {
-      directionHead = 'r';
-      directionBody = 'x';
-      newX += resultadoDado * size;
-    } else if (keyCode === UP_ARROW) {
-      directionHead = 't';
-      directionBody = 'y';
-      newY -= resultadoDado * size;
-    } else if (keyCode === DOWN_ARROW) {
-      directionHead = 'b';
-      directionBody = 'y';
-      newY += resultadoDado * size;
-    }
-
-    if (
-      newX >= 0 &&
-      newY >= 0 &&
-      newX < width &&
-      newY < height &&
-      !dogTrail.some(sq => sq.x === newX && sq.y === newY)
-    ) {
-      let cornerType = '';
-      if (previousDirection !== directionHead && !hasTurned) { 
-        if (previousDirection === 'r' && directionHead === 'b') cornerType = 'lb';
-        if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
-        if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
-        if (previousDirection === 'l' && directionHead === 't') cornerType = 'rt';
-        if (previousDirection === 't' && directionHead === 'r') cornerType = 'rb';
-        if (previousDirection === 't' && directionHead === 'l') cornerType = 'lb';
-        if (previousDirection === 'b' && directionHead === 'r') cornerType = 'rt';
-        if (previousDirection === 'b' && directionHead === 'l') cornerType = 'lt';
-        hasTurned = true; 
+    for (let step = 0; step < resultadoDado; step++) {
+      if (keyCode === LEFT_ARROW) {
+        directionHead = 'l';
+        directionBody = 'x';
+        newX -= size;
+      } else if (keyCode === RIGHT_ARROW) {
+        directionHead = 'r';
+        directionBody = 'x';
+        newX += size;
+      } else if (keyCode === UP_ARROW) {
+        directionHead = 't';
+        directionBody = 'y';
+        newY -= size;
+      } else if (keyCode === DOWN_ARROW) {
+        directionHead = 'b';
+        directionBody = 'y';
+        newY += size;
       }
-  
-      currentHeadDirection = directionHead; 
-      dogTrail.push({ x: posX, y: posY, direction: directionBody, corner: cornerType });
-      posX = newX;
-      posY = newY;   
+
+      if (
+        newX >= 0 &&
+        newY >= 0 &&
+        newX < width &&
+        newY < height &&
+        !dogTrail.some(sq => sq.x === newX && sq.y === newY)
+      ) {
+        let cornerType = '';
+        if (previousDirection !== directionHead && !hasTurned) { 
+          if (previousDirection === 'r' && directionHead === 'b') cornerType = 'lb';
+          if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
+          if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
+          if (previousDirection === 'l' && directionHead === 't') cornerType = 'rt';
+          if (previousDirection === 't' && directionHead === 'r') cornerType = 'rb';
+          if (previousDirection === 't' && directionHead === 'l') cornerType = 'lb';
+          if (previousDirection === 'b' && directionHead === 'r') cornerType = 'rt';
+          if (previousDirection === 'b' && directionHead === 'l') cornerType = 'lt';
+          hasTurned = true; 
+        }
+    
+        currentHeadDirection = directionHead; 
+        console.log(posX, posY)
+        console.log(newX, newY)
+        dogTrail.push({ x: posX, y: posY, direction: directionBody, corner: cornerType });
+        posX = newX;
+        posY = newY;   
+      }
     }
   }
-
 
   hasTurned = false;
 
