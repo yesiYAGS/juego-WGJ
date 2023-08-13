@@ -33,6 +33,14 @@ button.lados:focus {
     outline: none;
 }
 
+button.lados:disabled {
+    opacity: .5;
+}
+
+#btnLanzarDado:disabled {
+    opacity: .5;
+}
+
 #btnLanzarDado {
     background: #2274A5;
     color:#ffffff;
