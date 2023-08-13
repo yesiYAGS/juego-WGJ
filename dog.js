@@ -2,6 +2,7 @@ let firstKeyPress = true;
 let posX = 0;
 let posY = 0;
 let size = 40;
+let rollbackCount = 3;
 let dogTrail = [];
 let totalOfSquares = 5;
 let redSquares = [];
@@ -13,7 +14,7 @@ let bodyImgs = {};
 let tailImgs = {};
 let cornerImgs = {};
 
-let alerted = new Array(totalOfSquares).fill(false);
+let alerted = new Array(totalOfSquares*3).fill(false);
 let resultadoDado = 0;
 
 function preload() {
@@ -21,18 +22,20 @@ function preload() {
   headImgs['b'] = loadImage('assets/head-b.svg');
   headImgs['l'] = loadImage('assets/head-l.svg');
   headImgs['t'] = loadImage('assets/head-t.svg');
-  bodyImgs['x'] = loadImage('assets/body-x.svg');
-  bodyImgs['y'] = loadImage('assets/body-y.svg');
+  bodyImgs['r'] = loadImage('assets/body-x.svg');
+  bodyImgs['l'] = loadImage('assets/body-x.svg');
+  bodyImgs['t'] = loadImage('assets/body-y.svg');
+  bodyImgs['b'] = loadImage('assets/body-y.svg');
   tailImgs['r'] = loadImage('assets/tail-r.svg');
   tailImgs['b'] = loadImage('assets/tail-b.svg');
-  cornerImgs['rb'] = loadImage('assets/corner-rb.svg');
-  cornerImgs['rt'] = loadImage('assets/corner-rt.svg');
-  cornerImgs['lb'] = loadImage('assets/corner-lb.svg');
-  cornerImgs['lt'] = loadImage('assets/corner-lt.svg');
+  cornerImgs['1'] = loadImage('assets/corner-1.svg');
+  cornerImgs['2'] = loadImage('assets/corner-2.svg');
+  cornerImgs['3'] = loadImage('assets/corner-3.svg');
+  cornerImgs['4'] = loadImage('assets/corner-4.svg');
 }
 
 let currentHeadDirection = 'r';
-let currentBodyDirection = 'x';
+let currentBodyDirection = 'r';
 let initialTailDirection = 'r';
 
 function setup() {
@@ -114,13 +117,8 @@ function draw() {
   });
 
   checkSpecialSquares(blueSquares, () => {
-    if (dogTrail.length > 2) {
-      let segment = dogTrail.pop();
-      posX = segment.x;
-      posY = segment.y;
-      segment = dogTrail.pop();
-      posX = segment.x;
-      posY = segment.y;
+    if (dogTrail.length > rollbackCount) {
+      retroceder(rollbackCount);
     }
   });
 
@@ -132,12 +130,12 @@ function draw() {
 function activarMovimiento(dado) {
   resultadoDado = dado;
 }
-function moverIzquierda() {
-  keyPressed(LEFT_ARROW);
-}
-
 function moverDerecha() {
   keyPressed(RIGHT_ARROW);
+}
+
+function moverIzquierda() {
+  keyPressed(LEFT_ARROW);
 }
 
 function moverArriba() {
@@ -171,19 +169,19 @@ function keyPressed(keyCode) {
     for (let step = 0; step < resultadoDado; step++) {
       if (keyCode === LEFT_ARROW) {
         directionHead = 'l';
-        directionBody = 'x';
+        directionBody = 'l';
         newX -= size;
       } else if (keyCode === RIGHT_ARROW) {
         directionHead = 'r';
-        directionBody = 'x';
+        directionBody = 'r';
         newX += size;
       } else if (keyCode === UP_ARROW) {
         directionHead = 't';
-        directionBody = 'y';
+        directionBody = 't';
         newY -= size;
       } else if (keyCode === DOWN_ARROW) {
         directionHead = 'b';
-        directionBody = 'y';
+        directionBody = 'b';
         newY += size;
       } else {
         return;
@@ -202,14 +200,14 @@ function keyPressed(keyCode) {
       ) {
         let cornerType = '';
         if (previousDirection !== directionHead && !hasTurned) {
-          if (previousDirection === 'r' && directionHead === 'b') cornerType = 'lb';
-          if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
-          if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
-          if (previousDirection === 'l' && directionHead === 't') cornerType = 'rt';
-          if (previousDirection === 't' && directionHead === 'r') cornerType = 'rb';
-          if (previousDirection === 't' && directionHead === 'l') cornerType = 'lb';
-          if (previousDirection === 'b' && directionHead === 'r') cornerType = 'rt';
-          if (previousDirection === 'b' && directionHead === 'l') cornerType = 'lt';
+          if (previousDirection === 'r' && directionHead === 'b') cornerType = '2';
+          if (previousDirection === 'r' && directionHead === 't') cornerType = '3';
+          if (previousDirection === 'l' && directionHead === 'b') cornerType = '1';
+          if (previousDirection === 'l' && directionHead === 't') cornerType = '4';
+          if (previousDirection === 't' && directionHead === 'r') cornerType = '1';
+          if (previousDirection === 't' && directionHead === 'l') cornerType = '2';
+          if (previousDirection === 'b' && directionHead === 'r') cornerType = '4';
+          if (previousDirection === 'b' && directionHead === 'l') cornerType = '3';
           hasTurned = true;
         }
 
@@ -243,4 +241,63 @@ function checkSpecialSquares(array, action) {
       break;
     }
   }
+}
+
+function retroceder(pasos) {
+  let segmentBeforeCorner;
+
+  for (let i = 0; i < pasos; i++) {
+    if (dogTrail.length > 0) {
+      let segment = dogTrail.pop();
+      posX = segment.x; 
+      posY = segment.y;
+    } else {
+      currentHeadDirection = initialTailDirection;
+    }
+  }
+
+  let previousSegment = dogTrail[dogTrail.length - 1];
+
+  if (previousSegment.corner) {
+    background(0, 0, 255);
+    segmentBeforeCorner = dogTrail[dogTrail.length - 2];
+    if (previousSegment.corner === '1') {
+      if (segmentBeforeCorner.direction === 't') {
+        currentHeadDirection = 'r';
+      } else if (segmentBeforeCorner.direction === 'l') {
+        currentHeadDirection = 'b';
+      }
+    } else if (previousSegment.corner === '2') {
+      if (segmentBeforeCorner.direction === 't') {
+        currentHeadDirection = 'l';
+      } else if (segmentBeforeCorner.direction === 'r') {
+        currentHeadDirection = 'b';
+      }
+    } else if (previousSegment.corner === '3') {
+      if (segmentBeforeCorner.direction === 'b') {
+        currentHeadDirection = 'l';
+      } else if (segmentBeforeCorner.direction === 'r') {
+        currentHeadDirection = 't';
+      }
+    } else if (previousSegment.corner === '4') {
+      if (segmentBeforeCorner.direction === 'b') {
+        currentHeadDirection = 'r';
+      } else if (segmentBeforeCorner.direction === 'l') {
+        currentHeadDirection = 't';
+      }
+    }
+  } else {
+    background(0, 255, 0);
+    if (previousSegment.direction === 'r') {
+      currentHeadDirection = 'r';
+    } else if (previousSegment.direction === 'l') {
+      currentHeadDirection = 'l';
+    } else if (previousSegment.direction === 't') {
+      currentHeadDirection = 't';
+    } else if (previousSegment.direction === 'b') {
+      currentHeadDirection = 'b';
+    }
+  }
+
+  console.log(previousSegment.corner);
 }
