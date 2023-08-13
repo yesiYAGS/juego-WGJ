@@ -175,10 +175,10 @@ function activarMovimiento(dado) {
 }
 
 function mover(direccion) {
-  if (dadoLanzado && !direccionElegida) {
+  if (dadoLanzado && direccionElegida) {
     console.log(dadoLanzado, direccionElegida);
-    direccionElegida = true;
-    keyPressed(getArrowKeyFromDirection(direccion));
+    keyPressed(direccion);
+    direccionElegida = false;
     habilitarBotonesDireccion(false);
     habilitarBotonLanzarDado(true);
   }
@@ -187,44 +187,32 @@ function mover(direccion) {
 function moverDerecha() {
   if (dadoLanzado && !direccionElegida) {
     console.log(dadoLanzado, direccionElegida)
-    keyPressed(RIGHT_ARROW);
-    dadoLanzado = true;
     direccionElegida = true;
-    habilitarBotonesDireccion(false);
-    habilitarBotonLanzarDado(true);
+    mover(RIGHT_ARROW)
   }
 }
 
 function moverIzquierda() {
   if (dadoLanzado && !direccionElegida) {
     console.log(dadoLanzado, direccionElegida)
-    keyPressed(LEFT_ARROW);
-    dadoLanzado = true;
     direccionElegida = true;
-    habilitarBotonesDireccion(false);
-    habilitarBotonLanzarDado(true);
+    mover(LEFT_ARROW)
   }
 }
 
 function moverArriba() {
   if (dadoLanzado && !direccionElegida) {
     console.log(dadoLanzado, direccionElegida)
-    keyPressed(UP_ARROW);
-    dadoLanzado = true;
     direccionElegida = true;
-    habilitarBotonesDireccion(false);
-    habilitarBotonLanzarDado(true);
+    mover(UP_ARROW)
   }
 }
 
 function moverAbajo() {
   if (dadoLanzado && !direccionElegida) {
     console.log(dadoLanzado, direccionElegida)
-    keyPressed(DOWN_ARROW);
-    dadoLanzado = true;
     direccionElegida = true;
-    habilitarBotonesDireccion(false);
-    habilitarBotonLanzarDado(true);
+    mover(DOWN_ARROW)
   }
 }
 
