@@ -43,6 +43,7 @@ function preload() {
   chocolateImage = loadImage('assets/chocolate.svg');
   uvaImage = loadImage('assets/uva.svg');
   cardImage = loadImage('assets/tarjeta-premios.svg');
+  sujetoImage = loadImage('assets/sujeto.svg');
 }
 
 let currentHeadDirection = 'r';
@@ -73,7 +74,7 @@ function setup() {
 
   yellowSquare = { x: x, y: y };
   fill(255, 255, 0);
-  rect(x, y, size, size);
+  image(sujetoImage, x, y, size, size);
 }
 
 function drawGrid() {
@@ -129,7 +130,7 @@ function draw() {
   drawSquares(blueSquares,alertedBlue, uvaImage);
   drawSquares(greenSquares, alertedGreen, cardImage);
   fill(255, 255, 0);
-  rect(yellowSquare.x, yellowSquare.y, size, size);
+  image(sujetoImage, yellowSquare.x, yellowSquare.y, size, size);
 
   if (dogTrail.length > 0) {
     image(tailImgs[initialTailDirection], dogTrail[0].x, dogTrail[0].y, size, size);
@@ -139,8 +140,16 @@ function draw() {
     let segment = dogTrail[i];
     if (segment.corner) {
       image(cornerImgs[segment.corner], segment.x, segment.y, size, size);
-    } else {
+    } else if (segment.direction) {
       image(bodyImgs[segment.direction], segment.x, segment.y, size, size);
+    } 
+
+    if (segment.x === yellowSquare.x && segment.y === yellowSquare.y){
+      noLoop();
+      setTimeout(() => {
+        alert("¡Perdiste! No encontraste a tu humano");
+        location.reload();
+      }, 100);
     }
   }
 
@@ -165,7 +174,7 @@ function draw() {
       alert("¡Ganaste!");
       location.reload();
     }, 100);
-  }
+  } 
 }
 
 function activarMovimiento(dado) {
