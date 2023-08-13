@@ -10,6 +10,7 @@ let tailImg;
 let bodyXImg;
 
 let alerted = new Array(totalOfSquares).fill(false);
+let resultadoDado = 0;
 
 function preload() {
   headImg = loadImage('assets/head.svg');
@@ -77,21 +78,38 @@ function draw() {
   }
 }
 
-function keyPressed() {
-  const resultadoDado = lanzarDado();
-  console.log("Resultado del lanzamiento del dado:", resultadoDado);
-  for (let step = 0; step < resultadoDado; step++) {
+function activarMovimiento(dado) {
+  resultadoDado = dado;
+}
+function moverIzquierda() {
+  keyPressed(LEFT_ARROW);
+}
+
+function moverDerecha() {
+  keyPressed(RIGHT_ARROW);
+}
+
+function moverArriba() {
+  keyPressed(UP_ARROW);
+}
+
+function moverAbajo() {
+  keyPressed(DOWN_ARROW);
+}
+
+function keyPressed(keyCode) {
+  if (resultadoDado > 0) {
     let newX = posX;
     let newY = posY;
 
     if (keyCode === LEFT_ARROW) {
-      newX -= size;
+      newX -= resultadoDado * size;
     } else if (keyCode === RIGHT_ARROW) {
-      newX += size;
+      newX += resultadoDado * size;
     } else if (keyCode === UP_ARROW) {
-      newY -= size;
+      newY -= resultadoDado * size;
     } else if (keyCode === DOWN_ARROW) {
-      newY += size;
+      newY += resultadoDado * size;
     }
 
     if (
@@ -103,7 +121,7 @@ function keyPressed() {
     ) {
       dogTrail.push({ x: posX, y: posY });
       posX = newX;
-      posY = newY;
+      posY = newY;   
     }
   }
 }
