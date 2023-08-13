@@ -12,6 +12,7 @@ let tailImgs = {};
 let cornerImgs = {};
 
 let alerted = new Array(totalOfSquares).fill(false);
+let resultadoDado = 0;
 
 function preload() {
   headImgs['r'] = loadImage('assets/head-r.svg');
@@ -97,8 +98,28 @@ function draw() {
   }
 }
 
-function keyPressed() {
-  const resultadoDado = lanzarDado();
+function activarMovimiento(dado) {
+  resultadoDado = dado;
+}
+function moverIzquierda() {
+  keyPressed(LEFT_ARROW);
+}
+
+function moverDerecha() {
+  keyPressed(RIGHT_ARROW);
+}
+
+function moverArriba() {
+  keyPressed(UP_ARROW);
+}
+
+function moverAbajo() {
+  keyPressed(DOWN_ARROW);
+}
+
+function keyPressed(keyCode) {
+  if (resultadoDado > 0) {
+    const resultadoDado = lanzarDado();
   console.log("Resultado del lanzamiento del dado:", resultadoDado);
   
   if (firstKeyPress) {
@@ -113,8 +134,6 @@ function keyPressed() {
   let previousDirection = currentHeadDirection;
 
   let hasTurned = false;
-
-  for (let step = 0; step < resultadoDado; step++) {
     let newX = posX;
     let newY = posY;
     let directionHead = currentHeadDirection;
@@ -123,19 +142,19 @@ function keyPressed() {
     if (keyCode === LEFT_ARROW) {
       directionHead = 'l';
       directionBody = 'x';
-      newX -= size;
+      newX -= resultadoDado * size;
     } else if (keyCode === RIGHT_ARROW) {
       directionHead = 'r';
       directionBody = 'x';
-      newX += size;
-    } else if (keyCode === DOWN_ARROW) {
-      directionHead = 'b';
-      directionBody = 'y';
-      newY += size;
+      newX += resultadoDado * size;
     } else if (keyCode === UP_ARROW) {
       directionHead = 't';
       directionBody = 'y';
-      newY -= size;
+      newY -= resultadoDado * size;
+    } else if (keyCode === DOWN_ARROW) {
+      directionHead = 'b';
+      directionBody = 'y';
+      newY += resultadoDado * size;
     }
 
     if (
@@ -161,9 +180,11 @@ function keyPressed() {
       currentHeadDirection = directionHead; 
       dogTrail.push({ x: posX, y: posY, direction: directionBody, corner: cornerType });
       posX = newX;
-      posY = newY;
+      posY = newY;   
     }
   }
 
+
   hasTurned = false;
+
 }
