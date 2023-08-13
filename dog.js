@@ -6,7 +6,7 @@ let posX = 0;
 let posY = 0;
 let initialPosX;
 let initialPosY;
-let size = 40;
+let size = 60;
 let rollbackCount = 3;
 let dogTrail = [];
 let totalOfRedSquares = 2;
