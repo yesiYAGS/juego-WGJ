@@ -10,6 +10,7 @@ let totalOfGreenSquares = 4;
 let redSquares = [];
 let blueSquares = [];
 let greenSquares = [];
+let yellowSquare;
 
 let headImgs = {};
 let bodyImgs = {};
@@ -53,11 +54,15 @@ function setup() {
   image(tailImgs[initialTailDirection], 0, 0, size, size);
 
   do {
-    yellowSquareX = int(random(width / size)) * size;
-    yellowSquareY = int(random(height / size)) * size;
-  } while (isSquareOccupied(yellowSquareX, yellowSquareY));
+    gridX = int(random(width / size));
+    gridY = int(random(height / size));
+    x = gridX * size;
+    y = gridY * size;
+  } while (isSquareOccupied(x, y) || (gridX === 0 && gridY === 0));
 
-  yellowSquare = { x: yellowSquareX, y: yellowSquareY };
+  yellowSquare = { x: x, y: y };
+  fill(255, 255, 0);
+  rect(x, y, size, size);
 }
 
 function drawGrid() {
@@ -83,7 +88,7 @@ function drawRandomSquares(count, array, r, g, b) {
       gridY = int(random(height / size));
       x = gridX * size;
       y = gridY * size;
-    } while (isSquareOccupied(x, y));
+    } while (isSquareOccupied(x, y) || (gridX === 0 && gridY === 0));
 
     array.push({ x: x, y: y });
     fill(r, g, b);
@@ -92,11 +97,17 @@ function drawRandomSquares(count, array, r, g, b) {
 }
 
 function isSquareOccupied(x, y) {
-  for (let square of [...redSquares, ...blueSquares, ...greenSquares]) {
-    if (square.x === x && square.y === y) {
-      return true;
-    }
+  for (const square of redSquares) {
+    if (square.x === x && square.y === y) return true;
   }
+  for (const square of blueSquares) {
+    if (square.x === x && square.y === y) return true;
+  }
+  for (const square of greenSquares) {
+    if (square.x === x && square.y === y) return true;
+  }
+  if (yellowSquare && yellowSquare.x === x && yellowSquare.y === y) return true;
+
   return false;
 }
 
