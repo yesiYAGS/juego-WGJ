@@ -1,4 +1,6 @@
 let firstKeyPress = true;
+let dadoLanzado = false;
+let direccionElegida = false;
 let posX = 0;
 let posY = 0;
 let size = 40;
@@ -99,23 +101,83 @@ function draw() {
 }
 
 function activarMovimiento(dado) {
-  resultadoDado = dado;
+  if (!dadoLanzado) {
+    resultadoDado = dado;i
+    dadoLanzado = true;
+    direccionElegida = false;
+    habilitarBotonLanzarDado(false);
+  } else {
+    console.log("Ya se lanzó el dado, elige la dirección.");
+    habilitarBotonesDireccion(true);
+  }
 }
+
+function mover(direccion) {
+  if (dadoLanzado && !direccionElegida) {
+    console.log(dadoLanzado, direccionElegida);
+    direccionElegida = true;
+    keyPressed(getArrowKeyFromDirection(direccion));
+    habilitarBotonesDireccion(false);
+    habilitarBotonLanzarDado(true);
+  }
+}
+
 function moverIzquierda() {
-  keyPressed(LEFT_ARROW);
+  if (dadoLanzado && !direccionElegida) {
+    console.log(dadoLanzado, direccionElegida)
+    keyPressed(LEFT_ARROW);
+    dadoLanzado = true;
+    direccionElegida = true;
+    habilitarBotonesDireccion(false);
+    habilitarBotonLanzarDado(true);
+  }
 }
 
 function moverDerecha() {
-  keyPressed(RIGHT_ARROW);
+  if (dadoLanzado && !direccionElegida) {
+    console.log(dadoLanzado, direccionElegida)
+    keyPressed(RIGHT_ARROW);
+    dadoLanzado = true;
+    direccionElegida = true;
+    habilitarBotonesDireccion(false);
+    habilitarBotonLanzarDado(true);
+  }
 }
 
 function moverArriba() {
-  keyPressed(UP_ARROW);
+  if (dadoLanzado && !direccionElegida) {
+    console.log(dadoLanzado, direccionElegida)
+    keyPressed(UP_ARROW);
+    dadoLanzado = true;
+    direccionElegida = true;
+    habilitarBotonesDireccion(false);
+    habilitarBotonLanzarDado(true);
+  }
 }
 
 function moverAbajo() {
-  keyPressed(DOWN_ARROW);
+  if (dadoLanzado && !direccionElegida) {
+    console.log(dadoLanzado, direccionElegida)
+    keyPressed(DOWN_ARROW);
+    dadoLanzado = true;
+    direccionElegida = true;
+    habilitarBotonesDireccion(false);
+    habilitarBotonLanzarDado(true);
+  }
 }
+
+function habilitarBotonesDireccion(habilitar) {
+  const botonesDireccion = document.querySelectorAll("#flechas button");
+  botonesDireccion.forEach(button => {
+    button.disabled = !habilitar;
+  });
+}
+
+function habilitarBotonLanzarDado(habilitar) {
+  const botonLanzarDado = document.getElementById("btnLanzarDado");
+  botonLanzarDado.disabled = !habilitar;
+}
+
 
 function keyPressed(keyCode) {
   if (resultadoDado > 0) {
