@@ -87,12 +87,12 @@ function draw() {
   }
 
   image(headImgs[currentHeadDirection], posX, posY, size, size);
-  
+
   for (let i = 0; i < redSquares.length; i++) {
     let redSquare = redSquares[i];
     if (posX === redSquare.x && posY === redSquare.y && !alerted[i]) {
       alert("Pisaste una carta");
-      alerted[i] = true; 
+      alerted[i] = true;
       break;
     }
   }
@@ -119,20 +119,20 @@ function moverAbajo() {
 
 function keyPressed(keyCode) {
   if (resultadoDado > 0) {
-  console.log("Resultado del lanzamiento del dado:", resultadoDado);
-  
-  if (firstKeyPress) {
-    if (keyCode === RIGHT_ARROW) {
-      initialTailDirection = 'r';
-    } else if (keyCode === DOWN_ARROW) {
-      initialTailDirection = 'b';
+    console.log("Resultado del lanzamiento del dado:", resultadoDado);
+
+    if (firstKeyPress) {
+      if (keyCode === RIGHT_ARROW) {
+        initialTailDirection = 'r';
+      } else if (keyCode === DOWN_ARROW) {
+        initialTailDirection = 'b';
+      }
+      firstKeyPress = false;
     }
-    firstKeyPress = false;
-  }
 
-  let previousDirection = currentHeadDirection;
+    let previousDirection = currentHeadDirection;
 
-  let hasTurned = false;
+    let hasTurned = false;
     let newX = posX;
     let newY = posY;
     let directionHead = currentHeadDirection;
@@ -156,6 +156,10 @@ function keyPressed(keyCode) {
         newY += size;
       }
 
+      if (dogTrail.some(sq => sq.x === newX && sq.y === newY)) {
+        break;
+      }
+
       if (
         newX >= 0 &&
         newY >= 0 &&
@@ -164,7 +168,7 @@ function keyPressed(keyCode) {
         !dogTrail.some(sq => sq.x === newX && sq.y === newY)
       ) {
         let cornerType = '';
-        if (previousDirection !== directionHead && !hasTurned) { 
+        if (previousDirection !== directionHead && !hasTurned) {
           if (previousDirection === 'r' && directionHead === 'b') cornerType = 'lb';
           if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
           if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
@@ -173,15 +177,15 @@ function keyPressed(keyCode) {
           if (previousDirection === 't' && directionHead === 'l') cornerType = 'lb';
           if (previousDirection === 'b' && directionHead === 'r') cornerType = 'rt';
           if (previousDirection === 'b' && directionHead === 'l') cornerType = 'lt';
-          hasTurned = true; 
+          hasTurned = true;
         }
-    
-        currentHeadDirection = directionHead; 
+
+        currentHeadDirection = directionHead;
         console.log(posX, posY)
         console.log(newX, newY)
         dogTrail.push({ x: posX, y: posY, direction: directionBody, corner: cornerType });
         posX = newX;
-        posY = newY;   
+        posY = newY;
       }
     }
   }
