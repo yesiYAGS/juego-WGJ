@@ -40,8 +40,8 @@ function preload() {
   cornerImgs['2'] = loadImage('assets/corner-2.svg');
   cornerImgs['3'] = loadImage('assets/corner-3.svg');
   cornerImgs['4'] = loadImage('assets/corner-4.svg');
-  chocolateImage = loadImage('assets/head-t.svg');
-  uvaImage = loadImage('assets/head-t.svg');
+  chocolateImage = loadImage('assets/chocolate.svg');
+  uvaImage = loadImage('assets/uva.svg');
   cardImage = loadImage('assets/tarjeta-premios.svg');
   sujetoImage = loadImage('assets/sujeto.svg');
 }
