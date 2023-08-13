@@ -4,7 +4,9 @@ let posY = 0;
 let size = 40;
 let rollbackCount = 3;
 let dogTrail = [];
-let totalOfSquares = 5;
+let totalOfRedSquares = 2;
+let totalOfBlueSquares = 6;
+let totalOfGreenSquares = 4;
 let redSquares = [];
 let blueSquares = [];
 let greenSquares = [];
@@ -14,9 +16,9 @@ let bodyImgs = {};
 let tailImgs = {};
 let cornerImgs = {};
 
-let alertedRed = new Array(totalOfSquares).fill(false);
-let alertedBlue = new Array(totalOfSquares).fill(false);
-let alertedGreen = new Array(totalOfSquares).fill(false);
+let alertedRed = new Array(totalOfRedSquares).fill(false);
+let alertedBlue = new Array(totalOfBlueSquares).fill(false);
+let alertedGreen = new Array(totalOfGreenSquares).fill(false);
 let resultadoDado = 0;
 
 function preload() {
@@ -44,9 +46,9 @@ function setup() {
   createCanvas(size * 10, size * 10);
   background(200);
   drawGrid();
-  drawRandomSquares(totalOfSquares, redSquares, 255, 0, 0); // Rojo
-  drawRandomSquares(totalOfSquares, blueSquares, 0, 0, 255); // Azul
-  drawRandomSquares(totalOfSquares, greenSquares, 0, 255, 0); // Verde
+  drawRandomSquares(totalOfRedSquares, redSquares, 255, 0, 0); // Rojo
+  drawRandomSquares(totalOfBlueSquares, blueSquares, 0, 0, 255); // Azul
+  drawRandomSquares(totalOfGreenSquares, greenSquares, 0, 255, 0); // Verde
   image(headImgs[currentHeadDirection], 0, 0, size, size);
   image(tailImgs[initialTailDirection], 0, 0, size, size);
 }
