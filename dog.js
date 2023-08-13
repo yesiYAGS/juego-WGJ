@@ -14,7 +14,9 @@ let bodyImgs = {};
 let tailImgs = {};
 let cornerImgs = {};
 
-let alerted = new Array(totalOfSquares).fill(false);
+let alertedRed = new Array(totalOfSquares).fill(false);
+let alertedBlue = new Array(totalOfSquares).fill(false);
+let alertedGreen = new Array(totalOfSquares).fill(false);
 let resultadoDado = 0;
 
 function preload() {
@@ -93,9 +95,9 @@ function draw() {
   background(200);
   drawGrid();
 
-  drawSquares(redSquares, 255, 0, 0);
-  drawSquares(blueSquares, 0, 0, 255);
-  drawSquares(greenSquares, 0, 255, 0);
+  drawSquares(redSquares, 255, 0, 0, alertedRed);
+  drawSquares(blueSquares, 0, 0, 255, alertedBlue);
+  drawSquares(greenSquares, 0, 255, 0, alertedGreen);
 
   if (dogTrail.length > 0) {
     image(tailImgs[initialTailDirection], dogTrail[0].x, dogTrail[0].y, size, size);
@@ -112,17 +114,17 @@ function draw() {
 
   image(headImgs[currentHeadDirection], posX, posY, size, size);
 
-  checkSpecialSquares(redSquares, () => {
+  checkSpecialSquares(redSquares, alertedRed, () => {
     alert("¡Perdiste!");
   });
 
-  checkSpecialSquares(blueSquares, () => {
+  checkSpecialSquares(blueSquares, alertedBlue, () => {
     if (dogTrail.length > rollbackCount) {
       retroceder(rollbackCount);
     }
   });
 
-  checkSpecialSquares(greenSquares, () => {
+  checkSpecialSquares(greenSquares, alertedGreen, () => {
     alert("Esta es la personalidad de tu dueño");
   });
 }
@@ -225,19 +227,20 @@ function keyPressed(keyCode) {
 
 }
 
-function drawSquares(array, r, g, b) {
-  for (let { x, y } of array) {
-    fill(r, g, b);
+function drawSquares(array, r, g, b, alertedArray) {
+  for (let i = 0; i < array.length; i++) {
+    let { x, y } = array[i];
+    fill(r, g, b, alertedArray[i] ? 64 : 255);
     rect(x + size / 4, y + size / 4, size / 2, size / 2);
   }
 }
 
-function checkSpecialSquares(array, action) {
+function checkSpecialSquares(array, alertedArray, action) {
   for (let i = 0; i < array.length; i++) {
     let square = array[i];
-    if (posX === square.x && posY === square.y && !alerted[i]) {
+    if (posX === square.x && posY === square.y && !alertedArray[i]) {
       setTimeout(action, 100); 
-      alerted[i] = true;
+      alertedArray[i] = true;
       break;
     }
   }
@@ -298,6 +301,4 @@ function retroceder(pasos) {
       currentHeadDirection = 'b';
     }
   }
-
-  console.log(previousSegment.corner);
 }
