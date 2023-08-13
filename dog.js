@@ -1,3 +1,4 @@
+let firstKeyPress = true;
 let posX = 0;
 let posY = 0;
 let size = 40;
@@ -5,26 +6,40 @@ let dogTrail = [];
 let totalOfSquares = 5;
 let redSquares = [];
 
-let headImg
-let tailImg;
-let bodyXImg;
+let headImgs = {};
+let bodyImgs = {};
+let tailImgs = {};
+let cornerImgs = {};
 
 let alerted = new Array(totalOfSquares).fill(false);
 let resultadoDado = 0;
 
 function preload() {
-  headImg = loadImage('assets/head.svg');
-  tailImg = loadImage('assets/tail.svg');
-  bodyXImg = loadImage('assets/body-x.svg');
+  headImgs['r'] = loadImage('assets/head-r.svg');
+  headImgs['b'] = loadImage('assets/head-b.svg');
+  headImgs['l'] = loadImage('assets/head-l.svg');
+  headImgs['t'] = loadImage('assets/head-t.svg');
+  bodyImgs['x'] = loadImage('assets/body-x.svg');
+  bodyImgs['y'] = loadImage('assets/body-y.svg');
+  tailImgs['r'] = loadImage('assets/tail-r.svg');
+  tailImgs['b'] = loadImage('assets/tail-b.svg');
+  cornerImgs['rb'] = loadImage('assets/corner-rb.svg');
+  cornerImgs['rt'] = loadImage('assets/corner-rt.svg');
+  cornerImgs['lb'] = loadImage('assets/corner-lb.svg');
+  cornerImgs['lt'] = loadImage('assets/corner-lt.svg');
 }
+
+let currentHeadDirection = 'r';
+let currentBodyDirection = 'x';
+let initialTailDirection = 'r';
 
 function setup() {
   createCanvas(size * 10, size * 10);
   background(200);
   drawGrid();
   drawRandomRedSquares(totalOfSquares);
-  image(headImg, 0, 0, size, size);
-  image(tailImg, 0, 0, size, size);
+  image(headImgs[currentHeadDirection], 0, 0, size, size);
+  image(tailImgs[initialTailDirection], 0, 0, size, size);
 }
 
 function drawGrid() {
@@ -59,14 +74,19 @@ function draw() {
   }
 
   if (dogTrail.length > 0) {
-    image(tailImg, dogTrail[0].x, dogTrail[0].y, size, size);
+    image(tailImgs[initialTailDirection], dogTrail[0].x, dogTrail[0].y, size, size);
   }
 
   for (let i = 1; i < dogTrail.length; i++) {
-    image(bodyXImg, dogTrail[i].x, dogTrail[i].y, size, size);
+    let segment = dogTrail[i];
+    if (segment.corner) {
+      image(cornerImgs[segment.corner], segment.x, segment.y, size, size);
+    } else {
+      image(bodyImgs[segment.direction], segment.x, segment.y, size, size);
+    }
   }
 
-  image(headImg, posX, posY, size, size);
+  image(headImgs[currentHeadDirection], posX, posY, size, size);
   
   for (let i = 0; i < redSquares.length; i++) {
     let redSquare = redSquares[i];
@@ -99,16 +119,41 @@ function moverAbajo() {
 
 function keyPressed(keyCode) {
   if (resultadoDado > 0) {
+    const resultadoDado = lanzarDado();
+  console.log("Resultado del lanzamiento del dado:", resultadoDado);
+  
+  if (firstKeyPress) {
+    if (keyCode === RIGHT_ARROW) {
+      initialTailDirection = 'r';
+    } else if (keyCode === DOWN_ARROW) {
+      initialTailDirection = 'b';
+    }
+    firstKeyPress = false;
+  }
+
+  let previousDirection = currentHeadDirection;
+
+  let hasTurned = false;
     let newX = posX;
     let newY = posY;
+    let directionHead = currentHeadDirection;
+    let directionBody = currentBodyDirection;
 
     if (keyCode === LEFT_ARROW) {
+      directionHead = 'l';
+      directionBody = 'x';
       newX -= resultadoDado * size;
     } else if (keyCode === RIGHT_ARROW) {
+      directionHead = 'r';
+      directionBody = 'x';
       newX += resultadoDado * size;
     } else if (keyCode === UP_ARROW) {
+      directionHead = 't';
+      directionBody = 'y';
       newY -= resultadoDado * size;
     } else if (keyCode === DOWN_ARROW) {
+      directionHead = 'b';
+      directionBody = 'y';
       newY += resultadoDado * size;
     }
 
@@ -119,9 +164,27 @@ function keyPressed(keyCode) {
       newY < height &&
       !dogTrail.some(sq => sq.x === newX && sq.y === newY)
     ) {
-      dogTrail.push({ x: posX, y: posY });
+      let cornerType = '';
+      if (previousDirection !== directionHead && !hasTurned) { 
+        if (previousDirection === 'r' && directionHead === 'b') cornerType = 'lb';
+        if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
+        if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
+        if (previousDirection === 'l' && directionHead === 't') cornerType = 'rt';
+        if (previousDirection === 't' && directionHead === 'r') cornerType = 'rb';
+        if (previousDirection === 't' && directionHead === 'l') cornerType = 'lb';
+        if (previousDirection === 'b' && directionHead === 'r') cornerType = 'rt';
+        if (previousDirection === 'b' && directionHead === 'l') cornerType = 'lt';
+        hasTurned = true; 
+      }
+  
+      currentHeadDirection = directionHead; 
+      dogTrail.push({ x: posX, y: posY, direction: directionBody, corner: cornerType });
       posX = newX;
       posY = newY;   
     }
   }
+
+
+  hasTurned = false;
+
 }
