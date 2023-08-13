@@ -15,6 +15,7 @@ let redSquares = [];
 let blueSquares = [];
 let greenSquares = [];
 let yellowSquare;
+let chocolateImage;
 
 let headImgs = {};
 let bodyImgs = {};
@@ -39,6 +40,9 @@ function preload() {
   cornerImgs['2'] = loadImage('assets/corner-2.svg');
   cornerImgs['3'] = loadImage('assets/corner-3.svg');
   cornerImgs['4'] = loadImage('assets/corner-4.svg');
+  chocolateImage = loadImage('assets/chocolate.svg');
+  uvaImage = loadImage('assets/uva.svg');
+  cardImage = loadImage('assets/tarjeta-premios.svg');
 }
 
 let currentHeadDirection = 'r';
@@ -49,9 +53,12 @@ function setup() {
   createCanvas(size * 10, size * 10);
   background(200);
   drawGrid();
-  drawRandomSquares(totalOfRedSquares, redSquares, 255, 0, 0); // Rojo
-  drawRandomSquares(totalOfBlueSquares, blueSquares, 0, 0, 255); // Azul
-  drawRandomSquares(totalOfGreenSquares, greenSquares, 0, 255, 0); // Verde
+
+  console.log(chocolateImage);
+  
+  drawRandomSquares(totalOfRedSquares, redSquares, chocolateImage); // Rojo
+  drawRandomSquares(totalOfBlueSquares, blueSquares, uvaImage); // Azul
+  drawRandomSquares(totalOfGreenSquares, greenSquares, cardImage); // Verde
   initialPosX = 0;
   initialPosY = 0;
   image(headImgs[currentHeadDirection], initialPosX, initialPosY, size, size);
@@ -80,7 +87,7 @@ function drawGrid() {
   }
 }
 
-function drawRandomSquares(count, array, r, g, b) {
+function drawRandomSquares(count, array, imagesvg) {
   for (let i = 0; i < count; i++) {
     let gridX;
     let gridY;
@@ -95,8 +102,7 @@ function drawRandomSquares(count, array, r, g, b) {
     } while (isSquareOccupied(x, y) || (gridX === 0 && gridY === 0));
 
     array.push({ x: x, y: y });
-    fill(r, g, b);
-    rect(x + size / 4, y + size / 4, size / 2, size / 2);
+    image(imagesvg, x, y, size, size);
   }
 }
 
@@ -119,9 +125,9 @@ function draw() {
   background(200);
   drawGrid();
 
-  drawSquares(redSquares, 255, 0, 0, alertedRed);
-  drawSquares(blueSquares, 0, 0, 255, alertedBlue);
-  drawSquares(greenSquares, 0, 255, 0, alertedGreen);
+  drawSquares(redSquares, alertedRed, chocolateImage);
+  drawSquares(blueSquares,alertedBlue, uvaImage);
+  drawSquares(greenSquares, alertedGreen, cardImage);
   fill(255, 255, 0);
   rect(yellowSquare.x, yellowSquare.y, size, size);
 
@@ -320,13 +326,13 @@ function keyPressed(keyCode) {
 
 }
 
-function drawSquares(array, r, g, b, alertedArray) {
+function drawSquares(array, alertedArray, imagesvg) {
   for (let i = 0; i < array.length; i++) {
     let { x, y } = array[i];
-    fill(r, g, b, alertedArray[i] ? 64 : 255);
-    rect(x + size / 4, y + size / 4, size / 2, size / 2);
+    image(imagesvg, x , y, size, size); // Dibujamos la imagen
   }
 }
+
 
 function checkSpecialSquares(array, alertedArray, action) {
   for (let i = 0; i < array.length; i++) {
