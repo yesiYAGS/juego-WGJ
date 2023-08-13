@@ -12,5 +12,6 @@ function lanzarDados() {
     direccionElegida = false;
     habilitarBotonLanzarDado(false);
     habilitarBotonesDireccion(true);
+    document.getElementById('audioFondo').play();
 }
    
