@@ -27,10 +27,8 @@ function preload() {
   headImgs['b'] = loadImage('assets/head-b.svg');
   headImgs['l'] = loadImage('assets/head-l.svg');
   headImgs['t'] = loadImage('assets/head-t.svg');
-  bodyImgs['r'] = loadImage('assets/body-x.svg');
-  bodyImgs['l'] = loadImage('assets/body-x.svg');
-  bodyImgs['t'] = loadImage('assets/body-y.svg');
-  bodyImgs['b'] = loadImage('assets/body-y.svg');
+  bodyImgs['r'] = bodyImgs['l'] = loadImage('assets/body-x.svg');
+  bodyImgs['t'] = bodyImgs['b'] = loadImage('assets/body-y.svg');
   tailImgs['r'] = loadImage('assets/tail-r.svg');
   tailImgs['b'] = loadImage('assets/tail-b.svg');
   cornerImgs['1'] = loadImage('assets/corner-1.svg');
