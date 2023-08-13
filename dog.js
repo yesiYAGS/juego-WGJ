@@ -151,6 +151,10 @@ function keyPressed() {
         if (previousDirection === 'r' && directionHead === 't') cornerType = 'lt';
         if (previousDirection === 'l' && directionHead === 'b') cornerType = 'rb';
         if (previousDirection === 'l' && directionHead === 't') cornerType = 'rt';
+        if (previousDirection === 't' && directionHead === 'r') cornerType = 'rb';
+        if (previousDirection === 't' && directionHead === 'l') cornerType = 'lb';
+        if (previousDirection === 'b' && directionHead === 'r') cornerType = 'rt';
+        if (previousDirection === 'b' && directionHead === 'l') cornerType = 'lt';
         hasTurned = true; 
       }
   
