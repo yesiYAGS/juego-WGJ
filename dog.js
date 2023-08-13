@@ -1,7 +1,7 @@
 let firstKeyPress = true;
 let dadoLanzado = false;
 let direccionElegida = false;
-let resultadoDado = 0;
+let resultado = 0;
 let posX = 0;
 let posY = 0;
 let initialPosX;
@@ -169,27 +169,13 @@ function draw() {
 }
 
 function activarMovimiento(dado) {
-  if (!dadoLanzado) {
-    resultadoDado = dado;
-    dadoLanzado = true;
-    direccionElegida = false;
-    habilitarBotonLanzarDado(false);
-  } else {
-    console.log("Ya se lanzó el dado, elige la dirección.");
-    habilitarBotonesDireccion(true);
-  }
-}
-
-function lanzarDado() {
-  resultadoDado = Math.floor(Math.random() * 6) + 1; // Lanzamiento de un dado de 6 caras
-  document.getElementById("resultado").innerText = "Resultado del dado: " + resultadoDado;
-  dadoLanzado = true;
-  direccionElegida = false;
-  habilitarBotonLanzarDado(false);
+  resultado = dado;
+  console.log("Ya se lanzó el dado, elige la dirección.");
   habilitarBotonesDireccion(true);
 }
 
 function mover(direccion) {
+  console.log("Mover", direccion);
   if (dadoLanzado && direccionElegida) {
     console.log(dadoLanzado, direccionElegida);
     keyPressed(direccion);
@@ -201,6 +187,7 @@ function mover(direccion) {
 }
 
 function moverDerecha() {
+  console.log("DERECHA")
   if (dadoLanzado && !direccionElegida) {
     console.log(dadoLanzado, direccionElegida)
     direccionElegida = true;
@@ -248,8 +235,10 @@ habilitarBotonesDireccion(false);
 
 
 function keyPressed(keyCode) {
-  if (resultadoDado > 0) {
-    console.log("Resultado del lanzamiento del dado:", resultadoDado);
+  console.log("🚀 ~ file: dog.js:254 ~ keyPressed ~ keyCode:", keyCode)
+  console.log(RIGHT_ARROW)
+  console.log("keyPressed")
+  if (resultado > 0) {
 
     if (firstKeyPress) {
       if (keyCode === RIGHT_ARROW) {
@@ -267,7 +256,8 @@ function keyPressed(keyCode) {
     let newY = posY;
     let directionHead = currentHeadDirection;
     let directionBody = currentBodyDirection;
-    for (let step = 0; step < resultadoDado; step++) {
+    for (let step = 0; step < resultado; step++) {
+      console.log("ENTRA EN EL FOR")
       if (keyCode === LEFT_ARROW) {
         directionHead = 'l';
         directionBody = 'l';
