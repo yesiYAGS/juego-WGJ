@@ -164,7 +164,7 @@ function draw() {
 
 function activarMovimiento(dado) {
   if (!dadoLanzado) {
-    resultadoDado = dado;i
+    resultadoDado = dado;
     dadoLanzado = true;
     direccionElegida = false;
     habilitarBotonLanzarDado(false);
