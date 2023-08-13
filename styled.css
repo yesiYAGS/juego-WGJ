@@ -14,3 +14,41 @@ body{
     flex-direction: column;
     align-items: center;
 }
+
+
+button.lados {
+    max-width: 100px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+button.lados img {
+    width: 100%;
+    height: auto;
+}
+
+button.lados:focus {
+    outline: none;
+}
+
+#btnLanzarDado {
+    background: #2274A5;
+    color:#ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid #140D4F;
+    font-weight: bold;
+}
+
+#flechas {
+    text-align: center;
+    font-weight: bold;
+}
+
+.container-control {
+    font-weight: bold;   
+}

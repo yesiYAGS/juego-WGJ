@@ -14,22 +14,23 @@
       <button onclick="lanzarDados()" id="btnLanzarDado">Lanzar Dado</button>
       <p id="resultadoDado"></p>
       <img id="imagenDado" src="assets/dado-6.svg" alt="Dado">
+    
+      <div id="flechas">
+        <p>Usa las flechas para mover al perro:</p>
+        <button class="lados" onclick="moverIzquierda()"><img src="assets/left-arrow.svg" alt=""></button>
+        <button class="lados" onclick="moverDerecha()"><img src="assets/right-arrow.svg" alt=""></button>
+        <button class="lados" onclick="moverArriba()"><img src="assets/up-arrow.svg" alt=""></button>
+        <button class="lados" onclick="moverAbajo()"><img src="assets/down-arrow.svg" alt=""></button>
+      </div>
+    
 
-    <div id="flechas">
-      <p>Usa las flechas para mover al perro:</p>
-      <button onclick="moverIzquierda()">&larr; Izquierda</button>
-      <button onclick="moverDerecha()">&rarr; Derecha</button>
-      <button onclick="moverArriba()">&uarr; Arriba</button>
-      <button onclick="moverAbajo()">&darr; Abajo</button>
-    </div>
-  </body>
-
-  <audio id="audioFondo" loop>
-    <source src="assets/music.mp3" type="audio/mpeg">
-    Tu navegador no soporta el elemento de audio.
-  </audio>
+    <audio id="audioFondo" loop>
+      <source src="assets/music.mp3" type="audio/mpeg">
+      Tu navegador no soporta el elemento de audio.
+    </audio>
 
   </div>
+</body>
   <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
   <script src="dice.js"></script>
   <script src="dog.js"></script>
