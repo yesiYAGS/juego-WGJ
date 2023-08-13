@@ -5,6 +5,8 @@ let size = 40;
 let dogTrail = [];
 let totalOfSquares = 5;
 let redSquares = [];
+let blueSquares = [];
+let greenSquares = [];
 
 let headImgs = {};
 let bodyImgs = {};
@@ -37,7 +39,9 @@ function setup() {
   createCanvas(size * 10, size * 10);
   background(200);
   drawGrid();
-  drawRandomRedSquares(totalOfSquares);
+  drawRandomSquares(totalOfSquares, redSquares, 255, 0, 0); // Rojo
+  drawRandomSquares(totalOfSquares, blueSquares, 0, 0, 255); // Azul
+  drawRandomSquares(totalOfSquares, greenSquares, 0, 255, 0); // Verde
   image(headImgs[currentHeadDirection], 0, 0, size, size);
   image(tailImgs[initialTailDirection], 0, 0, size, size);
 }
@@ -53,25 +57,42 @@ function drawGrid() {
   }
 }
 
-function drawRandomRedSquares(count) {
+function drawRandomSquares(count, array, r, g, b) {
   for (let i = 0; i < count; i++) {
-    let gridX = int(random(width / size));
-    let gridY = int(random(height / size));
-    let x = gridX * size;
-    let y = gridY * size;
-    redSquares.push({ x: x, y: y });
-    fill(255, 0, 0);
+    let gridX;
+    let gridY;
+    let x;
+    let y;
+
+    do {
+      gridX = int(random(width / size));
+      gridY = int(random(height / size));
+      x = gridX * size;
+      y = gridY * size;
+    } while (isSquareOccupied(x, y));
+
+    array.push({ x: x, y: y });
+    fill(r, g, b);
     rect(x + size / 4, y + size / 4, size / 2, size / 2);
   }
+}
+
+function isSquareOccupied(x, y) {
+  for (let square of [...redSquares, ...blueSquares, ...greenSquares]) {
+    if (square.x === x && square.y === y) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function draw() {
   background(200);
   drawGrid();
-  for (let { x, y } of redSquares) {
-    fill(255, 0, 0);
-    rect(x + size / 4, y + size / 4, size / 2, size / 2);
-  }
+
+  drawSquares(redSquares, 255, 0, 0);
+  drawSquares(blueSquares, 0, 0, 255);
+  drawSquares(greenSquares, 0, 255, 0);
 
   if (dogTrail.length > 0) {
     image(tailImgs[initialTailDirection], dogTrail[0].x, dogTrail[0].y, size, size);
@@ -88,14 +109,24 @@ function draw() {
 
   image(headImgs[currentHeadDirection], posX, posY, size, size);
 
-  for (let i = 0; i < redSquares.length; i++) {
-    let redSquare = redSquares[i];
-    if (posX === redSquare.x && posY === redSquare.y && !alerted[i]) {
-      alert("Pisaste una carta");
-      alerted[i] = true;
-      break;
+  checkSpecialSquares(redSquares, () => {
+    alert("¡Perdiste!");
+  });
+
+  checkSpecialSquares(blueSquares, () => {
+    if (dogTrail.length > 2) {
+      let segment = dogTrail.pop();
+      posX = segment.x;
+      posY = segment.y;
+      segment = dogTrail.pop();
+      posX = segment.x;
+      posY = segment.y;
     }
-  }
+  });
+
+  checkSpecialSquares(greenSquares, () => {
+    alert("Esta es la personalidad de tu dueño");
+  });
 }
 
 function activarMovimiento(dado) {
@@ -192,4 +223,22 @@ function keyPressed(keyCode) {
 
   hasTurned = false;
 
+}
+
+function drawSquares(array, r, g, b) {
+  for (let { x, y } of array) {
+    fill(r, g, b);
+    rect(x + size / 4, y + size / 4, size / 2, size / 2);
+  }
+}
+
+function checkSpecialSquares(array, action) {
+  for (let i = 0; i < array.length; i++) {
+    let square = array[i];
+    if (posX === square.x && posY === square.y && !alerted[i]) {
+      action();
+      alerted[i] = true;
+      break;
+    }
+  }
 }
