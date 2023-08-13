@@ -140,8 +140,16 @@ function draw() {
     let segment = dogTrail[i];
     if (segment.corner) {
       image(cornerImgs[segment.corner], segment.x, segment.y, size, size);
-    } else {
+    } else if (segment.direction) {
       image(bodyImgs[segment.direction], segment.x, segment.y, size, size);
+    } 
+
+    if (segment.x === yellowSquare.x && segment.y === yellowSquare.y){
+      noLoop();
+      setTimeout(() => {
+        alert("¡Perdiste! No encontraste a tu humano");
+        location.reload();
+      }, 100);
     }
   }
 
@@ -166,7 +174,7 @@ function draw() {
       alert("¡Ganaste!");
       location.reload();
     }, 100);
-  }
+  } 
 }
 
 function activarMovimiento(dado) {
