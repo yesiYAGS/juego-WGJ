@@ -79,7 +79,7 @@ function setup() {
 function drawGrid() {
   for (let x = 0; x < width; x += size) {
     for (let y = 0; y < height; y += size) {
-      stroke(0);
+      stroke(121, 163, 118);
       strokeWeight(1);
       line(x, 0, x, height);
       line(0, y, width, y);
@@ -122,7 +122,7 @@ function isSquareOccupied(x, y) {
 }
 
 function draw() {
-  background(200);
+  background(190, 247, 171);
   drawGrid();
 
   drawSquares(redSquares, alertedRed, chocolateImage);
