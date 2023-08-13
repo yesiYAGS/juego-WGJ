@@ -185,6 +185,8 @@ function keyPressed(keyCode) {
         directionHead = 'b';
         directionBody = 'y';
         newY += size;
+      } else {
+        return;
       }
 
       if (dogTrail.some(sq => sq.x === newX && sq.y === newY)) {
